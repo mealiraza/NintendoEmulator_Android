@@ -6,15 +6,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.ironsource.mediationsdk.IronSource;
+import com.ironsource.mediationsdk.logger.IronSourceError;
+import com.ironsource.mediationsdk.sdk.InterstitialListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +41,8 @@ public abstract class GalleryActivity extends BaseGameGalleryActivity
         implements OnItemClickListener {
 
     public static final String EXTRA_TABS_IDX = "EXTRA_TABS_IDX";
-    private static final String TAG = GalleryActivity.class.getSimpleName();
+
+    private static final String TAG = "GalleryActivity";
 
     ProgressDialog searchDialog = null;
     private ViewPager pager = null;
@@ -49,6 +55,45 @@ public abstract class GalleryActivity extends BaseGameGalleryActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        IronSource.loadInterstitial();
+
+        IronSource.setInterstitialListener(new InterstitialListener() {
+            @Override
+            public void onInterstitialAdReady() {
+                IronSource.showInterstitial();
+            }
+
+            @Override
+            public void onInterstitialAdLoadFailed(IronSourceError ironSourceError) {
+                Log.d(TAG, "onInterstitialAdLoadFailed: "+ironSourceError.getErrorMessage());
+            }
+
+            @Override
+            public void onInterstitialAdOpened() {
+
+            }
+
+            @Override
+            public void onInterstitialAdClosed() {
+
+            }
+
+            @Override
+            public void onInterstitialAdShowSucceeded() {
+
+            }
+
+            @Override
+            public void onInterstitialAdShowFailed(IronSourceError ironSourceError) {
+
+            }
+
+            @Override
+            public void onInterstitialAdClicked() {
+
+            }
+        });
         dbHelper = new DatabaseHelper(this);
         setContentView(R.layout.activity_gallery);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -71,6 +116,9 @@ public abstract class GalleryActivity extends BaseGameGalleryActivity
         exts = getRomExtensions();
         exts.addAll(getArchiveExtensions());
         inZipExts = getRomExtensions();
+
+        reloadGames(true, null);
+
     }
 
     @Override
