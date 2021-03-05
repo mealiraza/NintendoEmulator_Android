@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -58,4 +60,5 @@ public class NesGalleryActivity extends GalleryActivity {
             PreferenceUtil.setFragmentShader(this, resultCode);
         }
     }
+
 }

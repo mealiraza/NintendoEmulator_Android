@@ -25,7 +25,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
-import com.ironsource.mediationsdk.IronSource;
+
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -73,11 +73,12 @@ public class SplashActivity extends Activity {
 /**
  *Ad Units should be in the type of IronSource.Ad_Unit.AdUnitName, example
  */
-        IronSource.init(this, "edff4781", IronSource.AD_UNIT.INTERSTITIAL);
+
         Dexter.withContext(SplashActivity.this).withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)
                 .withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                        //TODO here is the rom file download code
                         String path = Environment.getExternalStorageDirectory().toString()+"/"+Environment.DIRECTORY_DOWNLOADS;
                         Log.d("Files", "Path: " + path);
                         File directory = new File(path);

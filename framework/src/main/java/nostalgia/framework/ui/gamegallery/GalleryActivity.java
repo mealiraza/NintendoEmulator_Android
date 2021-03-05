@@ -6,20 +6,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import com.ironsource.mediationsdk.IronSource;
-import com.ironsource.mediationsdk.logger.IronSourceError;
-import com.ironsource.mediationsdk.sdk.InterstitialListener;
+
+import com.unity3d.ads.IUnityAdsListener;
+import com.unity3d.ads.UnityAds;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,11 +36,11 @@ import nostalgia.framework.utils.EmuUtils;
 import nostalgia.framework.utils.NLog;
 
 public abstract class GalleryActivity extends BaseGameGalleryActivity
-        implements OnItemClickListener {
+        implements OnItemClickListener  {
 
     public static final String EXTRA_TABS_IDX = "EXTRA_TABS_IDX";
 
-    private static final String TAG = "GalleryActivity";
+    private static final String TAG = "mytest";
 
     ProgressDialog searchDialog = null;
     private ViewPager pager = null;
@@ -52,48 +50,42 @@ public abstract class GalleryActivity extends BaseGameGalleryActivity
     private boolean rotateAnim = false;
     private TabLayout mTabLayout;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        IronSource.loadInterstitial();
-
-        IronSource.setInterstitialListener(new InterstitialListener() {
+//        startActivity(new Intent(GalleryActivity.this, DemoActivity.class));
+//        finish();
+        UnityAds.initialize(GalleryActivity.this,"4038560",true);
+        //Network Connectivity Status
+        UnityAds.addListener(new IUnityAdsListener() {
             @Override
-            public void onInterstitialAdReady() {
-                IronSource.showInterstitial();
-            }
-
-            @Override
-            public void onInterstitialAdLoadFailed(IronSourceError ironSourceError) {
-                Log.d(TAG, "onInterstitialAdLoadFailed: "+ironSourceError.getErrorMessage());
-            }
-
-            @Override
-            public void onInterstitialAdOpened() {
+            public void onUnityAdsReady(String s) {
 
             }
 
             @Override
-            public void onInterstitialAdClosed() {
+            public void onUnityAdsStart(String s) {
 
             }
 
             @Override
-            public void onInterstitialAdShowSucceeded() {
+            public void onUnityAdsFinish(String s, UnityAds.FinishState finishState) {
 
             }
 
             @Override
-            public void onInterstitialAdShowFailed(IronSourceError ironSourceError) {
-
-            }
-
-            @Override
-            public void onInterstitialAdClicked() {
+            public void onUnityAdsError(UnityAds.UnityAdsError unityAdsError, String s) {
 
             }
         });
+
+
+
+
+        //Network Connectivity Statu
         dbHelper = new DatabaseHelper(this);
         setContentView(R.layout.activity_gallery);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -149,6 +141,8 @@ public abstract class GalleryActivity extends BaseGameGalleryActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+
         if (rotateAnim) {
             rotateAnim = false;
         }
@@ -162,11 +156,17 @@ public abstract class GalleryActivity extends BaseGameGalleryActivity
     @Override
     protected void onPause() {
         super.onPause();
+
+
         PreferenceUtil.saveLastGalleryTab(this, pager.getCurrentItem());
     }
 
     @Override
     public void onItemClick(GameDescription game) {
+
+        if(UnityAds.isReady("rewardedVideo")){
+            UnityAds.show(GalleryActivity.this);
+        }
         File gameFile = new File(game.path);
         NLog.i(TAG, "select " + game);
 

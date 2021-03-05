@@ -12,6 +12,18 @@
     <string name="act_emulator_load_game_failed">Failed to load game</string>
     <string name="act_emulator_save_state_failed">Failed to save state</string>
     <string name="act_emulator_load_state_failed">Failed to load state</string>
+    <string name="initializing">Initializing</string>
+    <string name="show">Show</string>
+    <string name="load">Load</string>
+    <string name="rv">Rewarded Video</string>
+    <string name="ow">Offerwall</string>
+    <string name="is">Interstitial</string>
+    <string name="version">sdk version</string>
+    <string name="rewarded_dialog_header">Video Rewarded</string>
+    <string name="rewarded_dialog_message">You have been rewarded</string>
+    <string name="rvButtonState">rvButtonState</string>
+    <string name="isButtonState">isButtonState</string>
+    <string name="owButtonState">owButtonState</string>
 
     <!-- REmote controler -->
     <string name="act_remote_controller_select_server">Select server</string>
