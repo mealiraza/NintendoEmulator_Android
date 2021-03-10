@@ -25,6 +25,7 @@ android {
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_STL=c++_static'
+                version "3.20.0"
             }
         }
     }
